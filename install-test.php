@@ -11,7 +11,7 @@
 //MAKE SURE YOU KEEP THE "/" AT THE BEGINNING AND END OF ALL THE VARIABLES
 $bin_file='/usr/sbin/openvpn';
 $config_dir='/etc/openvpn/';
-$easy_rsa_dir = '/usr/share/doc/openvpn/examples/easy-rsa/';
+$easy_rsa_dir = '/usr/share/easy-rsa/';
 //END USER EDITS
 
 

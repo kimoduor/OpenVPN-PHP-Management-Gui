@@ -73,7 +73,7 @@
                     $apt_update = $ssh->exec('sudo apt-get update');
                     echo "<pre>$apt_update</pre>";
                     echo str_repeat(' ', 1024 * 64);
-                    $install_openvpn_cmd = $ssh->exec("sudo apt-get -y install openvpn");
+                    $install_openvpn_cmd = $ssh->exec("sudo apt-get -y install openvpn easy-rsa");
                     echo "<br />";
                     echo "<pre>$install_openvpn_cmd</pre>";
                     echo str_repeat(' ', 1024 * 64);
