@@ -173,6 +173,16 @@ include('Net/SSH2.php');
             $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
             $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
 
+            //still have to use read/write, since I need the session variables to remain the same.....
+            echo "<pre>Running ./clean-all</pre>";
+            $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
+            $ssh->write("cd " . $var_dir . ";./clean-all\n");
+            echo "<pre>$output</pre>";
+            echo str_repeat(' ', 1024 * 64);
+            $ssh->setTimeout(10);
+            $output = $ssh->read('/.*@.*[$|#]|.*[P|p]lease.*|.*denied.*/', NET_SSH2_READ_REGEX);
+            //If get permission denied, attempt a work around.
+            echo "OUTPUT: $output";
 
             //now that var file is edited, continue with new setup with sudo, not root
             //TODO.. add support for password when generating keys
@@ -185,16 +195,6 @@ include('Net/SSH2.php');
             echo "<pre>$output</pre>";
             echo str_repeat(' ', 1024 * 64);
 
-            //still have to use read/write, since I need the session variables to remain the same.....
-            echo "<pre>Running ./clean-all</pre>";
-            $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
-            $ssh->write("cd " . $var_dir . ";./clean-all\n");
-            echo "<pre>$output</pre>";
-            echo str_repeat(' ', 1024 * 64);
-            $ssh->setTimeout(10);
-            $output = $ssh->read('/.*@.*[$|#]|.*[P|p]lease.*|.*denied.*/', NET_SSH2_READ_REGEX);
-            //If get permission denied, attempt a work around.
-            echo "OUTPUT: $output";
             if (stristr($output, 'denied')) {//If clean-all gets "permission denied"
                 echo "Running command!";
                 echo str_repeat(' ', 1024 * 64);
@@ -298,7 +298,7 @@ include('Net/SSH2.php');
             $output = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
             echo "<pre>$output</pre>";
             echo str_repeat(' ', 1024 * 64);
-            
+
             echo "<pre>Running . ./vars</pre>";
             echo str_repeat(' ', 1024 * 64); //purge buffer
             $ssh->write("cd " . $var_dir . ";source ./vars\n");
