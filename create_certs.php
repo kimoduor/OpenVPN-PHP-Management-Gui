@@ -503,13 +503,6 @@ if ($_GET['action'] == "initial-setup"){
 		$result = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
 			echo "<pre>$result</pre>";
 		echo "<h2>Check for errors, then continue to the install script one more time <a href='install.php?action=final_check&client_name=$client_name'>Install</a></h2>";
-
-	
-	
-		
-		
-		
-		
 		exit;
 
 	}
