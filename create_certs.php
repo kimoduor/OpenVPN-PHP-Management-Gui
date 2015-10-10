@@ -290,18 +290,18 @@ include('Net/SSH2.php');
             $ssh->exec("sed -i 's/KEY_EMAIL=.*/KEY_EMAIL=\"$key_email\"/g' $var_file");
             $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
 
-            //still have to use read/write, since I need the session variables to remain the same.....
-            echo "<pre>Running ./clean-all</pre>";
+            echo "<pre>Running . ./vars</pre>";
             echo str_repeat(' ', 1024 * 64); //purge buffer
-            $ssh->write("cd " . $var_dir . ";./clean-all\n");
+            $ssh->write("cd " . $var_dir . ";source ./vars\n");
             $ssh->setTimeout(10);
             $output = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
             echo "<pre>$output</pre>";
             echo str_repeat(' ', 1024 * 64);
 
-            echo "<pre>Running . ./vars</pre>";
+            //still have to use read/write, since I need the session variables to remain the same.....
+            echo "<pre>Running ./clean-all</pre>";
             echo str_repeat(' ', 1024 * 64); //purge buffer
-            $ssh->write("cd " . $var_dir . ";source ./vars\n");
+            $ssh->write("cd " . $var_dir . ";./clean-all\n");
             $ssh->setTimeout(10);
             $output = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
             echo "<pre>$output</pre>";
@@ -463,15 +463,24 @@ include('Net/SSH2.php');
                 echo "DH STILL not completed.... waiting...<br />";
                 echo "<br /><br /><br /><br /><br />";
                 echo str_repeat(' ', 1024 * 64);
-                sleep(35);
-                exec("pgrep -fl ./build-dh", $output, $return);
-                //	print_r($output);
-                foreach ($output as $oi => $o) {
-                    if (strpos($o, 'pgrep') !== false) {
-                        unset($output[$oi]);
+                sleep(20);
+                for ($cnt = 0; $cnt < 600; $cnt++) {
+                    exec("pgrep -fl ./build-dh", $output, $return);
+                    //	print_r($output);
+                    foreach ($output as $oi => $o) {
+                        if (strpos($o, 'pgrep') !== false) {
+                            unset($output[$oi]);
+                        }
+                    }
+                    $return = count($output);
+                    if ($return == 1) {
+                        echo "Second $cnt. Still waiting for DH\n";
+                        sleep(1);
+                    } else {
+                        echo "DH Complete\n";
+                        break;
                     }
                 }
-                $return = count($output);
                 unset($output);
                 if ($return == 1) {
                     echo "<hr>DH STILL NOT COMPLETED.... manually run <br />source ./vars and ./build-dh in $var_dir then <br />copy dh1024.pem from $key_dir to $config_dir<hr>";
