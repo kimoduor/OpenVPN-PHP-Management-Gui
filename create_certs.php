@@ -290,18 +290,18 @@ include('Net/SSH2.php');
             $ssh->exec("sed -i 's/KEY_EMAIL=.*/KEY_EMAIL=\"$key_email\"/g' $var_file");
             $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
 
-            echo "<pre>Running . ./vars</pre>";
-            echo str_repeat(' ', 1024 * 64); //purge buffer
-            $ssh->write("cd " . $var_dir . ";source ./vars\n");
-            $ssh->setTimeout(10);
-            $output = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
-            echo "<pre>$output</pre>";
-            echo str_repeat(' ', 1024 * 64);
-
             //still have to use read/write, since I need the session variables to remain the same.....
             echo "<pre>Running ./clean-all</pre>";
             echo str_repeat(' ', 1024 * 64); //purge buffer
             $ssh->write("cd " . $var_dir . ";./clean-all\n");
+            $ssh->setTimeout(10);
+            $output = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
+            echo "<pre>$output</pre>";
+            echo str_repeat(' ', 1024 * 64);
+            
+            echo "<pre>Running . ./vars</pre>";
+            echo str_repeat(' ', 1024 * 64); //purge buffer
+            $ssh->write("cd " . $var_dir . ";source ./vars\n");
             $ssh->setTimeout(10);
             $output = $ssh->read('/.*@.*[$|#]/', NET_SSH2_READ_REGEX);
             echo "<pre>$output</pre>";
