@@ -178,13 +178,13 @@ include('Net/SSH2.php');
 						   //if we can't find any files ending in .conf
                     } else {echo "<font color='B22222'>Error!</font> Unable to locate config file in <b>$config_dir</b><br /><br />";}
 					
-                    //key dir default is actually $config_dir . "/easy-rsa/2.0/keys" so will check there next
+                    //key dir default is actually $config_dir . "/easy-rsa/keys" so will check there next
                     if ($key_dir_found != "yes"){
-                        if (file_exists($config_dir . "easy-rsa/2.0/keys")){
-                            $key_dir = $config_dir . "easy-rsa/2.0/keys";
+                        if (file_exists($config_dir . "easy-rsa/keys")){
+                            $key_dir = $config_dir . "easy-rsa/keys";
                             $key_dir_found = "yes";
                             file_put_contents("settings.conf", "key_dir:" . $key_dir.PHP_EOL, FILE_APPEND | LOCK_EX);
-                            }else{echo "<font color='B22222'>Warn!</font> Non Critical.... Unable to locate key directory in <b>$config_dir</b> or <b>" . $config_dir . "easy-rsa/2.0/keys</b><br /><br />";}
+                            }else{echo "<font color='B22222'>Warn!</font> Non Critical.... Unable to locate key directory in <b>$config_dir</b> or <b>" . $config_dir . "easy-rsa/keys</b><br /><br />";}
                     }	
 									
                     if ($key_dir_found == "yes"){
@@ -192,7 +192,7 @@ include('Net/SSH2.php');
 					}	
 					
                     //TODO remove debug
-                    //TODO add key dir setting for /easy-rsa/2.0
+                    //TODO add key dir setting for /easy-rsa
                     //$ca_key_found = "no";
                     // $ca_crt_found = "no";
                      //$server_crt_found = "no";
@@ -215,7 +215,7 @@ include('Net/SSH2.php');
                     }else{echo "<font color='B22222'>Error!</font> Server crt NOT FOUND! (looking for $server_crt_name)<br /><br />";}
 					
                     //Looking for PKITOOL and OPENSSL.CNF
-                    $default_pkitool_location = $config_dir . "easy-rsa/2.0/pkitool";
+                    $default_pkitool_location = $config_dir . "easy-rsa/pkitool";
                     if (file_exists($default_pkitool_location)){
                             $pki_tool_found = "yes";
                             echo "<font color='OOFFOO'>Success!</font> Found: <b>$default_pkitool_location</b><br /><br />";
@@ -240,12 +240,12 @@ include('Net/SSH2.php');
                                     echo "<font color='OOFFOO'>Success!</font> Found: <b>$default_pkitool_location</b><br /><br />";
                             } else {
                                     echo "<font color='B22222'>Fatal Error!</font> PKITOOL copy failed! PKITOOL NOT FOUND!<br /><br />";
-                                    echo "You need to manually discover what the issue is and copy PKITOOL to $config_dir" . "easy-rsa/2.0/<br />";
+                                    echo "You need to manually discover what the issue is and copy PKITOOL to $config_dir" . "easy-rsa/<br />";
                                     echo "Then re-run this script.<br />";
                                     exit;
                             }
                     }
-                    $default_openssl_location = $config_dir . "easy-rsa/2.0/openssl.cnf";
+                    $default_openssl_location = $config_dir . "easy-rsa/openssl.cnf";
                     if (file_exists($default_openssl_location)){
                         echo "<font color='OOFFOO'>Success!</font> Found: <b>openssl.cnf</b><br />";
                         $found_openssl = "yes";
@@ -284,8 +284,8 @@ include('Net/SSH2.php');
                         //now find the cnf file to match the version
                         //$match[0] = '1.0.0';
                         echo "Searching for exact match to openssl version<br />";
-                        echo "$config_dir" . "easy-rsa/2.0/<br /><br />";
-                        $easyrsa_dir_files = scandir($config_dir . "easy-rsa/2.0/");
+                        echo "$config_dir" . "easy-rsa/<br /><br />";
+                        $easyrsa_dir_files = scandir($config_dir . "easy-rsa/");
                         foreach($easyrsa_dir_files as $current_file){
                             if ((fnmatch("openssl-$match[0].cnf", $current_file)) or (fnmatch("openssl-$match[0].cnf.gz", $current_file))){ //searching for files ending in .cnf
                                 echo "Found exact match:  $current_file<br />";
@@ -309,7 +309,7 @@ include('Net/SSH2.php');
                                 }
                                 if (empty($cnf_files[0])){
                                     echo "<font color='B22222'>Fatal Error!</font> OPENSSL.CNF (or variants) not found!<br /><br />";
-                                    echo "You need to manually discover what the issue is and copy OPENSSL.CNF (or variants) to $config_dir" . "easy-rsa/2.0/<br />";
+                                    echo "You need to manually discover what the issue is and copy OPENSSL.CNF (or variants) to $config_dir" . "easy-rsa/<br />";
                                     echo "Then re-run this script.<br />";
                                     exit;
                                 }
@@ -329,7 +329,7 @@ include('Net/SSH2.php');
                                 $openssl_strip = pathinfo($latest_openssl);
                                 if ($openssl_strip['extension'] == "gz") {
                                         echo "File is compressed, attempting to decompress with gunzip...<br />";
-                                        $easyrsa_dir = $config_dir . "easy-rsa/2.0/";
+                                        $easyrsa_dir = $config_dir . "easy-rsa/";
                                         $output = $ssh->exec("cd $easyrsa_dir; sudo gunzip -v $latest_openssl\n");
                                         $ssh->setTimeout(10);
                                         echo "<pre>$output</pre>";
@@ -343,7 +343,7 @@ include('Net/SSH2.php');
                                 }
                                 echo "Using $latest_openssl! Copying to openssl.cnf<br />";
                                 //TODO add this variable $easyrsa_dir far above
-                                $easyrsa_dir = $config_dir . "easy-rsa/2.0/";
+                                $easyrsa_dir = $config_dir . "easy-rsa/";
                                 $output = $ssh->exec("cd $easyrsa_dir; sudo cp -v $latest_openssl openssl.cnf\n");
                                 echo "<pre>$output</pre>";
 
@@ -451,7 +451,7 @@ include('Net/SSH2.php');
 				echo "Printing your config file......<br />";
 				echo "</div>";
 				echo "<div class='span5'>";
-				echo "Checking $config_dir" . "easy-rsa/2.0/....<br />";
+				echo "Checking $config_dir" . "easy-rsa/....<br />";
 			}
 			
 			

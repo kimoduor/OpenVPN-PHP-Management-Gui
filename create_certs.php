@@ -13,9 +13,9 @@ include('Net/SSH2.php');
 <?php
 //TODO: Functionize this entire page... or at least parts of this... could save a lot of lines and simplify
 read_config_file();
-$default_pkitool_location = $config_dir . "/easy-rsa/2.0/pkitool";
-$var_file = $config_dir . "easy-rsa/2.0/vars";
-$var_dir = $config_dir . "easy-rsa/2.0/";
+$default_pkitool_location = $config_dir . "/easy-rsa/pkitool";
+$var_file = $config_dir . "easy-rsa/vars";
+$var_dir = $config_dir . "easy-rsa/";
 $key_dir = $var_dir . "keys/";
 //$a_var_lines = file($var_file);
 if ($_GET['action'] == "initial-setup"){

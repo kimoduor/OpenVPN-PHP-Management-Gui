@@ -9,11 +9,11 @@ define('NET_SSH2_LOGGING', NET_SSH2_LOG_COMPLEX);
         <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
 </head>
 <?php
-$var_file = "/etc/openvpn/easy-rsa/2.0/vars";
-$key_dir = "/etc/openvpn/easy-rsa/2.0/keys";
+$var_file = "/etc/openvpn/easy-rsa/vars";
+$key_dir = "/etc/openvpn/easy-rsa/keys";
 $key_country = "EN";
 $key_province = "TEST2";
-$var_dir = "/etc/openvpn/easy-rsa/2.0/";
+$var_dir = "/etc/openvpn/easy-rsa/";
 $password = "RHB12admin";
 $ssh = new Net_SSH2('localhost');
 		if (!$ssh->login('root', 'RHB12+ADMIN')) {

@@ -47,7 +47,7 @@ include('Net/SSH2.php');
 				if (!$ssh->login($username, $password)) {
 					exit('Login Failed');
 				}	
-			$default_pkitool_location = $config_dir . "/easy-rsa/2.0/pkitool";
+			$default_pkitool_location = $config_dir . "/easy-rsa/pkitool";
 			if (!(file_exists($default_pkitool_location))){
 				echo "<font color='B22222'>Error!</font> PKITOOL not found... required, will attempt to copy into $config_dir<br />";
 				

@@ -138,7 +138,7 @@ function read_config_file(){
 			$key_dir_name = $key_dir_values[1];
 			continue;
 		}
-		//TODO... actually write a var dir.... right now just using $var_dir = $config_dir . "easy-rsa/2.0/";
+		//TODO... actually write a var dir.... right now just using $var_dir = $config_dir . "easy-rsa/";
 		if (stristr($line, "var_dir")){
 			$var_dir_values = explode(":", trim($line));
 			$var_dir = $var_dir_values[1];
@@ -167,7 +167,7 @@ function create_server_key($server_name, $config_dir){
 	 if (!$ssh->login($username, $password)) {
 		 exit('Login Failed');
 	 }
-	$var_dir = $config_dir . "easy-rsa/2.0/";
+	$var_dir = $config_dir . "easy-rsa/";
 	//first, source vars
 	echo "<pre>Running . ./vars</pre>";
 	echo str_repeat(' ',1024*64);//purge buffer
@@ -200,7 +200,7 @@ function create_client_key($client_name, $config_dir){
 	 if (!$ssh->login($username, $password)) {
 		 exit('Login Failed');
 	 }
-	$var_dir = $config_dir . "easy-rsa/2.0/";
+	$var_dir = $config_dir . "easy-rsa/";
 	//first, source vars
 	echo "<pre>Running . ./vars</pre>";
 	echo "<pre>VAR DIR: ".$var_dir."</pre>";
