@@ -1,5 +1,5 @@
 <?php
-if (($_GET['action'] == "back") and isset($_POST['password'])){
+if (($_GET['action'] == "backs") and isset($_POST['password'])){
 	session_start();
 	$source = $_GET['source'];
 	if ($_POST['username'] == ""){
