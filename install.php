@@ -396,7 +396,7 @@ include('Net/SSH2.php');
             }
 		
 			//Will run initial setup if ca or server certs are not set up...
-			if (($server_crt_found != "yes") or ($server_key_found != "yes") or ($ca_crt_found != "yes") or ($ca_key_found != "yes") and ($_GET['action'] != "force-continue") and ($pki_tool_found == "yes") and ($openssl_found == "yes")){
+			//if (($server_crt_found != "yes") or ($server_key_found != "yes") or ($ca_crt_found != "yes") or ($ca_key_found != "yes") and ($_GET['action'] != "force-continue") and ($pki_tool_found == "yes") and ($openssl_found == "yes")){
 				//If only the CA key is not found, not critical if CA is set up elsewhere, can force continue or do initial setup.
 				if (($ca_key_found != "yes") and ($_GET['action'] != "initial-setup") and ($server_crt_found == "yes") and ($server_key_found == "yes") and ($ca_crt_found == "yes")){
 					echo "CA Key not found, not critical if you have a CA setup elsewhere... do you wish to force continue?<br />If you do not know, you most likely should NOT force continue.<br />";
@@ -411,7 +411,7 @@ include('Net/SSH2.php');
 					echo "<a class='btn btn-danger' href='create_certs.php?action=initial-setup&source=installer'>Create Certs</a>";
 					exit;
 				}	
-			}
+			//}
 			
 			
 			//If returning from initial setup, check for client name of certs
